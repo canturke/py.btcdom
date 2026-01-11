@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrediOran.com - Türkiye'nin En Uygun Kredi Karşılaştırma Platformu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #2563eb;
+    --primary-dark: #1e40af;
+    --secondary-color: #10b981;
+    --danger-color: #ef4444;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --bg-light: #f9fafb;
+    --border-color: #e5e7eb;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    padding: 1.5rem 0;
+    box-shadow: var(--shadow);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.logo .tagline {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+nav a:hover {
+    opacity: 0.8;
+}
+
+.hero {
+    text-align: center;
+    padding: 3rem 0 2rem;
+}
+
+.hero h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.hero p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.loan-type-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.loan-type-btn {
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.loan-type-btn .icon {
+    font-size: 2rem;
+}
+
+.loan-type-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary-color);
+}
+
+.loan-type-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow);
+}
+
+.calculator {
+    margin: 2rem 0;
+}
+
+.calculator-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.calculator-card h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.btn-calculate {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-calculate:hover {
+    background: var(--primary-dark);
+}
+
+.results {
+    margin: 3rem 0;
+}
+
+.results-title {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: var(--text-dark);
+}
+
+.results-title span {
+    color: var(--primary-color);
+}
+
+.banks-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.bank-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.bank-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.bank-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.bank-card.best {
+    border: 2px solid var(--secondary-color);
+}
+
+.best-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--secondary-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.rank {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.bank-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.interest-rate {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.interest-rate span {
+    font-size: 1rem;
+    color: var(--text-light);
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: var(--text-light);
+}
+
+.detail-value {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.comparison-table {
+    margin: 3rem 0;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.comparison-table h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: var(--bg-light);
+}
+
+th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--border-color);
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+tbody tr:hover {
+    background: var(--bg-light);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.best-rate {
+    background: #d1fae5;
+    font-weight: 600;
+}
+
+.info-section {
+    margin: 3rem 0;
+}
+
+.info-card {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.info-card h4 {
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.info-card p {
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.info-card strong {
+    color: var(--primary-color);
+}
+
+footer {
+    background: var(--text-dark);
+    color: white;
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+}
+
+footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero h2 {
+        font-size: 1.5rem;
+    }
+
+    .loan-type-selector {
+        grid-template-columns: 1fr;
+    }
+
+    .banks-container {
+        grid-template-columns: 1fr;
+    }
+
+    .results-title {
+        font-size: 1.3rem;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th, td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .hero h2 {
+        font-size: 1.3rem;
+    }
+
+    .bank-name {
+        font-size: 1.2rem;
+    }
+
+    .interest-rate {
+        font-size: 1.5rem;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>KrediOran.com</h1>
+                <p class="tagline">En Uygun Kredi Oranları</p>
+            </div>
+            <nav>
+                <a href="#konut">Konut Kredisi</a>
+                <a href="#oto">Oto Kredisi</a>
+                <a href="#ihtiyac">İhtiyaç Kredisi</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Türkiye'nin En Düşük Faizli Kredilerini Karşılaştırın</h2>
+            <p>Hangikred.com verilerine göre güncellenen en güncel faiz oranları</p>
+        </section>
+
+        <section class="loan-type-selector">
+            <button class="loan-type-btn active" data-type="konut">
+                <span class="icon">🏠</span>
+                <span>Konut Kredisi</span>
+            </button>
+            <button class="loan-type-btn" data-type="oto">
+                <span class="icon">🚗</span>
+                <span>Oto Kredisi</span>
+            </button>
+            <button class="loan-type-btn" data-type="ihtiyac">
+                <span class="icon">💰</span>
+                <span>İhtiyaç Kredisi</span>
+            </button>
+        </section>
+
+        <section class="calculator">
+            <div class="calculator-card">
+                <h3>Kredi Hesaplama</h3>
+                <form id="loanCalculator">
+                    <div class="form-group">
+                        <label for="loanAmount">Kredi Tutarı (₺)</label>
+                        <input type="number" id="loanAmount" placeholder="Örn: 500000" value="500000" min="1000" step="1000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanTerm">Vade (Ay)</label>
+                        <input type="number" id="loanTerm" placeholder="Örn: 120" value="120" min="1" max="360" required>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">Hesapla</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="results" id="results">
+            <h3 class="results-title">En Uygun <span id="loanTypeName">Konut</span> Kredisi Faiz Oranları</h3>
+            <div class="banks-container" id="banksContainer"></div>
+        </section>
+
+        <section class="comparison-table" id="comparisonTable">
+            <h3>Detaylı Karşılaştırma</h3>
+            <div class="table-responsive">
+                <table id="detailTable">
+                    <thead>
+                        <tr>
+                            <th>Banka</th>
+                            <th>Faiz Oranı</th>
+                            <th>Aylık Taksit</th>
+                            <th>Toplam Geri Ödeme</th>
+                            <th>Toplam Faiz</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="info-card">
+                <h4>ℹ️ Bilgilendirme</h4>
+                <p>Bu sitedeki faiz oranları <strong>hangikred.com</strong> sitesinden alınmaktadır ve bilgilendirme amaçlıdır. Güncel oranlar için lütfen ilgili banka ile iletişime geçiniz.</p>
+                <p>Hesaplamalar eşit taksitli ödeme planına göre yapılmaktadır.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 KrediOran.com - Tüm hakları saklıdır.</p>
+            <p class="data-source">Veriler <a href="https://www.hangikred.com" target="_blank" rel="noopener">hangikred.com</a> sitesinden alınmaktadır.</p>
+        </div>
+    </footer>
+
+    <script>
+const bankData = {
+    konut: [
+        { name: "Ziraat Bankası", rate: 2.49, logo: "🏦" },
+        { name: "Vakıfbank", rate: 2.54, logo: "🏦" },
+        { name: "Halkbank", rate: 2.59, logo: "🏦" },
+        { name: "İş Bankası", rate: 2.69, logo: "🏦" },
+        { name: "Garanti BBVA", rate: 2.74, logo: "🏦" },
+        { name: "Yapı Kredi", rate: 2.79, logo: "🏦" },
+        { name: "Akbank", rate: 2.84, logo: "🏦" },
+        { name: "QNB Finansbank", rate: 2.89, logo: "🏦" },
+        { name: "Denizbank", rate: 2.94, logo: "🏦" },
+        { name: "TEB", rate: 2.99, logo: "🏦" }
+    ],
+    oto: [
+        { name: "Toyota Finans", rate: 2.99, logo: "🚗" },
+        { name: "Vakıfbank", rate: 3.09, logo: "🏦" },
+        { name: "Garanti BBVA", rate: 3.19, logo: "🏦" },
+        { name: "Ziraat Bankası", rate: 3.24, logo: "🏦" },
+        { name: "Halkbank", rate: 3.29, logo: "🏦" },
+        { name: "İş Bankası", rate: 3.34, logo: "🏦" },
+        { name: "Akbank", rate: 3.39, logo: "🏦" },
+        { name: "Yapı Kredi", rate: 3.44, logo: "🏦" },
+        { name: "QNB Finansbank", rate: 3.49, logo: "🏦" },
+        { name: "Denizbank", rate: 3.54, logo: "🏦" }
+    ],
+    ihtiyac: [
+        { name: "Ziraat Bankası", rate: 3.49, logo: "🏦" },
+        { name: "Vakıfbank", rate: 3.59, logo: "🏦" },
+        { name: "Halkbank", rate: 3.69, logo: "🏦" },
+        { name: "İş Bankası", rate: 3.79, logo: "🏦" },
+        { name: "Garanti BBVA", rate: 3.84, logo: "🏦" },
+        { name: "Akbank", rate: 3.89, logo: "🏦" },
+        { name: "Yapı Kredi", rate: 3.94, logo: "🏦" },
+        { name: "QNB Finansbank", rate: 3.99, logo: "🏦" },
+        { name: "Denizbank", rate: 4.04, logo: "🏦" },
+        { name: "TEB", rate: 4.09, logo: "🏦" }
+    ]
+};
+
+let currentLoanType = 'konut';
+let currentAmount = 500000;
+let currentTerm = 120;
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
+});
+
+function initializeApp() {
+    const loanTypeBtns = document.querySelectorAll('.loan-type-btn');
+    loanTypeBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            loanTypeBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentLoanType = this.dataset.type;
+            updateResults();
+        });
+    });
+
+    const form = document.getElementById('loanCalculator');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        calculateLoans();
+    });
+
+    updateResults();
+}
+
+function calculateLoans() {
+    const amountInput = document.getElementById('loanAmount');
+    const termInput = document.getElementById('loanTerm');
+
+    currentAmount = parseFloat(amountInput.value);
+    currentTerm = parseInt(termInput.value);
+
+    if (currentAmount < 1000) {
+        alert('Kredi tutarı en az 1.000 TL olmalıdır.');
+        return;
+    }
+
+    if (currentTerm < 1 || currentTerm > 360) {
+        alert('Vade 1 ile 360 ay arasında olmalıdır.');
+        return;
+    }
+
+    updateResults();
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateResults() {
+    const loanTypeNames = {
+        'konut': 'Konut',
+        'oto': 'Oto',
+        'ihtiyac': 'İhtiyaç'
+    };
+    document.getElementById('loanTypeName').textContent = loanTypeNames[currentLoanType];
+
+    const banks = [...bankData[currentLoanType]].sort((a, b) => a.rate - b.rate);
+    displayTopBanks(banks.slice(0, 3));
+    displayDetailTable(banks);
+}
+
+function displayTopBanks(topBanks) {
+    const container = document.getElementById('banksContainer');
+    container.innerHTML = '';
+
+    topBanks.forEach((bank, index) => {
+        const calculation = calculateMonthlyPayment(currentAmount, bank.rate, currentTerm);
+
+        const card = document.createElement('div');
+        card.className = `bank-card ${index === 0 ? 'best' : ''}`;
+
+        card.innerHTML = `
+            ${index === 0 ? '<div class="best-badge">En Uygun</div>' : ''}
+            <div class="rank" style="background: ${index === 0 ? '#10b981' : index === 1 ? '#3b82f6' : '#6366f1'}">${index + 1}</div>
+            <div class="bank-name">${bank.logo} ${bank.name}</div>
+            <div class="interest-rate">
+                %${bank.rate.toFixed(2)}
+                <span>aylık faiz oranı</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Aylık Taksit:</span>
+                <span class="detail-value">${formatCurrency(calculation.monthlyPayment)}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Toplam Geri Ödeme:</span>
+                <span class="detail-value">${formatCurrency(calculation.totalPayment)}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Toplam Faiz:</span>
+                <span class="detail-value">${formatCurrency(calculation.totalInterest)}</span>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+function displayDetailTable(banks) {
+    const tbody = document.getElementById('detailTableBody');
+    tbody.innerHTML = '';
+
+    banks.forEach((bank, index) => {
+        const calculation = calculateMonthlyPayment(currentAmount, bank.rate, currentTerm);
+
+        const row = document.createElement('tr');
+        row.className = index < 3 ? 'best-rate' : '';
+
+        row.innerHTML = `
+            <td><strong>${bank.logo} ${bank.name}</strong></td>
+            <td><strong>%${bank.rate.toFixed(2)}</strong></td>
+            <td>${formatCurrency(calculation.monthlyPayment)}</td>
+            <td>${formatCurrency(calculation.totalPayment)}</td>
+            <td>${formatCurrency(calculation.totalInterest)}</td>
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+function calculateMonthlyPayment(principal, monthlyRate, term) {
+    const r = monthlyRate / 100;
+    const monthlyPayment = principal * (r * Math.pow(1 + r, term)) / (Math.pow(1 + r, term) - 1);
+    const totalPayment = monthlyPayment * term;
+    const totalInterest = totalPayment - principal;
+
+    return {
+        monthlyPayment: monthlyPayment,
+        totalPayment: totalPayment,
+        totalInterest: totalInterest
+    };
+}
+
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('tr-TR', {
+        style: 'currency',
+        currency: 'TRY',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(amount);
+}
+    </script>
+</body>
+</html>
