@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KrediOran.com - Türkiye'nin En Uygun Kredi Karşılaştırma Platformu</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>KrediOran.com</h1>
+                <p class="tagline">En Uygun Kredi Oranları</p>
+            </div>
+            <nav>
+                <a href="#konut">Konut Kredisi</a>
+                <a href="#oto">Oto Kredisi</a>
+                <a href="#ihtiyac">İhtiyaç Kredisi</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h2>Türkiye'nin En Düşük Faizli Kredilerini Karşılaştırın</h2>
+            <p>Hangikred.com verilerine göre güncellenen en güncel faiz oranları</p>
+        </section>
+
+        <!-- Kredi Türü Seçimi -->
+        <section class="loan-type-selector">
+            <button class="loan-type-btn active" data-type="konut">
+                <span class="icon">🏠</span>
+                <span>Konut Kredisi</span>
+            </button>
+            <button class="loan-type-btn" data-type="oto">
+                <span class="icon">🚗</span>
+                <span>Oto Kredisi</span>
+            </button>
+            <button class="loan-type-btn" data-type="ihtiyac">
+                <span class="icon">💰</span>
+                <span>İhtiyaç Kredisi</span>
+            </button>
+        </section>
+
+        <!-- Kredi Hesaplama Formu -->
+        <section class="calculator">
+            <div class="calculator-card">
+                <h3>Kredi Hesaplama</h3>
+                <form id="loanCalculator">
+                    <div class="form-group">
+                        <label for="loanAmount">Kredi Tutarı (₺)</label>
+                        <input type="number" id="loanAmount" placeholder="Örn: 500000" value="500000" min="1000" step="1000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanTerm">Vade (Ay)</label>
+                        <input type="number" id="loanTerm" placeholder="Örn: 120" value="120" min="1" max="360" required>
+                    </div>
+
+                    <button type="submit" class="btn-calculate">Hesapla</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- En Uygun 3 Banka -->
+        <section class="results" id="results">
+            <h3 class="results-title">En Uygun <span id="loanTypeName">Konut</span> Kredisi Faiz Oranları</h3>
+            <div class="banks-container" id="banksContainer">
+                <!-- Bankalar dinamik olarak yüklenecek -->
+            </div>
+        </section>
+
+        <!-- Detaylı Karşılaştırma Tablosu -->
+        <section class="comparison-table" id="comparisonTable">
+            <h3>Detaylı Karşılaştırma</h3>
+            <div class="table-responsive">
+                <table id="detailTable">
+                    <thead>
+                        <tr>
+                            <th>Banka</th>
+                            <th>Faiz Oranı</th>
+                            <th>Aylık Taksit</th>
+                            <th>Toplam Geri Ödeme</th>
+                            <th>Toplam Faiz</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailTableBody">
+                        <!-- Tablo dinamik olarak doldurulacak -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Bilgilendirme -->
+        <section class="info-section">
+            <div class="info-card">
+                <h4>ℹ️ Bilgilendirme</h4>
+                <p>Bu sitedeki faiz oranları <strong>hangikred.com</strong> sitesinden alınmaktadır ve bilgilendirme amaçlıdır. Güncel oranlar için lütfen ilgili banka ile iletişime geçiniz.</p>
+                <p>Hesaplamalar eşit taksitli ödeme planına göre yapılmaktadır.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 KrediOran.com - Tüm hakları saklıdır.</p>
+            <p class="data-source">Veriler <a href="https://www.hangikred.com" target="_blank" rel="noopener">hangikred.com</a> sitesinden alınmaktadır.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
