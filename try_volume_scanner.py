@@ -51,11 +51,13 @@ def fetch_paribu():
             r[base] = float(v.get('volume',0)) * float(v.get('last',0))
     return r
 def fetch_binancetr():
-    d = get('https://api.binancetr.com/api/v3/ticker/24hr')
+    d = get('https://data-api.binance.vision/api/v3/ticker/24hr')
     r = {}
     for x in (d if isinstance(d, list) else []):
         if x.get('symbol','').endswith('TRY'):
-            r[x['symbol'][:-3].upper()] = float(x.get('quoteVolume',0))
+            sym = x['symbol'][:-3].upper()
+            if sym == 'BUSD': continue  # skip stablecoin
+            r[sym] = float(x.get('quoteVolume',0))
     return r
 def fetch_bitexen():
     d = get('https://www.bitexen.com/api/v1/ticker/')
@@ -68,13 +70,22 @@ def fetch_bitexen():
                 r[base] = float(v.get('volume',v.get('volume_24h',0))) * float(v.get('last_price',v.get('last',0)))
     return r
 def fetch_icrypex():
-    d = get('https://api.icrypex.com/spots/tickers')
+    d = get('https://api.icrypex.com/v1/tickers')
+    # ICrypex only has USDT pairs; convert to TRY using USDTTRY rate
+    usdttry = 1.0
+    try:
+        rate_data = get('https://data-api.binance.vision/api/v3/ticker/price?symbol=USDTTRY')
+        usdttry = float(rate_data.get('price', 44))
+    except Exception:
+        usdttry = 44.0
     r = {}
     items = d if isinstance(d, list) else d.get('data', [])
     for x in items:
-        s = (x.get('symbol') or x.get('pair') or '').upper()
-        if s.endswith('TRY'):
-            r[s[:-3]] = float(x.get('quoteVolume') or x.get('quote_volume') or x.get('volume') or 0)
+        s = (x.get('symbol') or '').upper()
+        if s.endswith('USDT') and '/P' not in s:
+            base = s[:-4]
+            vol = float(x.get('volume') or 0) * float(x.get('last') or 0)
+            r[base] = vol * usdttry
     return r
 def fetch_okx():
     d = get('https://www.okx.com/api/v5/market/tickers?instType=SPOT')
