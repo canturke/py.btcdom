@@ -188,11 +188,76 @@ def main():
         w.writeheader()
         w.writerows(rows)
     print(f"\n  ✓ CSV kaydedildi: {csv_file}")
+    # XLSX export
+    generate_xlsx(rows)
+    print(f"  ✓ XLSX kaydedildi: try_volumes.xlsx")
     # HTML export
     generate_html(rows, all_errors)
     print(f"  ✓ HTML kaydedildi: try_volumes.html")
     print(f"\n  Hata veren borsalar: {list(all_errors.keys()) or 'YOK'}")
     print(f"{'='*55}\n")
+def generate_xlsx(rows):
+    from openpyxl import Workbook
+    from openpyxl.styles import Font, PatternFill, Alignment, numbers
+    wb = Workbook()
+    ws = wb.active
+    ws.title = 'TRY Volumes'
+    # Headers
+    headers = ['#', 'Sembol', 'İsim'] + [ex['name'] for ex in EXCHANGES] + ['TOPLAM']
+    hdr_font = Font(bold=True, color='FFFFFF', size=10)
+    hdr_fill = PatternFill('solid', fgColor='1a1a2e')
+    for c, h in enumerate(headers, 1):
+        cell = ws.cell(row=1, column=c, value=h)
+        cell.font = hdr_font
+        cell.fill = hdr_fill
+        cell.alignment = Alignment(horizontal='center')
+    # Data rows
+    fmt_try = '#,##0'
+    green_font = Font(bold=True, color='00AA00')
+    yellow_font = Font(bold=True, color='CC8800')
+    for ri, r in enumerate(rows, 2):
+        ws.cell(row=ri, column=1, value=r['rank'])
+        ws.cell(row=ri, column=2, value=r['symbol']).font = Font(bold=True)
+        ws.cell(row=ri, column=3, value=r['name'])
+        for ci, ex in enumerate(EXCHANGES, 4):
+            v = r[ex['id']]
+            cell = ws.cell(row=ri, column=ci, value=round(v) if v else None)
+            cell.number_format = fmt_try
+            if v >= 500e6:
+                cell.font = green_font
+            elif v >= 50e6:
+                cell.font = yellow_font
+        tot_cell = ws.cell(row=ri, column=len(EXCHANGES)+4, value=round(r['total']) if r['total'] else None)
+        tot_cell.number_format = fmt_try
+        tot_cell.font = Font(bold=True, color='0066CC')
+    # Totals row
+    tr = len(rows) + 2
+    ws.cell(row=tr, column=2, value='TOPLAM').font = Font(bold=True, size=11)
+    for ci, ex in enumerate(EXCHANGES, 4):
+        t = sum(r[ex['id']] for r in rows)
+        cell = ws.cell(row=tr, column=ci, value=round(t))
+        cell.number_format = fmt_try
+        cell.font = Font(bold=True)
+    grand = sum(r['total'] for r in rows)
+    gc = ws.cell(row=tr, column=len(EXCHANGES)+4, value=round(grand))
+    gc.number_format = fmt_try
+    gc.font = Font(bold=True, color='0066CC', size=11)
+    # Column widths
+    ws.column_dimensions['A'].width = 5
+    ws.column_dimensions['B'].width = 10
+    ws.column_dimensions['C'].width = 20
+    for ci in range(4, len(EXCHANGES)+5):
+        from openpyxl.utils import get_column_letter
+        ws.column_dimensions[get_column_letter(ci)].width = 16
+    # Timestamp sheet
+    ws2 = wb.create_sheet('Bilgi')
+    ws2.cell(row=1, column=1, value='Tarih')
+    ws2.cell(row=1, column=2, value=datetime.now().strftime('%d.%m.%Y %H:%M:%S'))
+    ws2.cell(row=2, column=1, value='Coin Sayısı')
+    ws2.cell(row=2, column=2, value=len(COINS))
+    ws2.cell(row=3, column=1, value='Borsa Sayısı')
+    ws2.cell(row=3, column=2, value=len(EXCHANGES))
+    wb.save('try_volumes.xlsx')
 def generate_html(rows, errors):
     ex_headers = ''.join(f'<th class="e{ex["type"]}">{ex["name"]}</th>' for ex in EXCHANGES)
     ts = datetime.now().strftime('%d.%m.%Y %H:%M')
