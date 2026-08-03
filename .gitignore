@@ -1,0 +1,12 @@
+# Secrets — asla commit edilmemeli
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Script çıktıları
+binance_symbols.csv
+binance_assets.csv
